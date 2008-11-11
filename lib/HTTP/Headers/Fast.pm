@@ -341,7 +341,7 @@ sub _date_header {
     my ( $self, $header, $time ) = @_;
     my ($old) = $self->_header_get($header);
     if ( defined $time ) {
-        $self->_header( $header, HTTP::Date::time2str($time) );
+        $self->_header_set( $header, HTTP::Date::time2str($time) );
     }
     $old =~ s/;.*// if defined($old);
     HTTP::Date::str2time($old);
