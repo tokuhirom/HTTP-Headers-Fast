@@ -72,17 +72,20 @@ sub header {
     my $self = shift;
     Carp::croak('Usage: $h->header($field, ...)') unless @_;
     my (@old);
-    my %seen;
-    while (@_) {
-        my $field = shift;
-        if (@_) {
+
+    if (@_ == 1) {
+        @old = $self->_header_get(@_);
+    } elsif( @_ == 2 ) {
+        @old = $self->_header_set(@_);
+    } else {
+        my %seen;
+        while (@_) {
+            my $field = shift;
             if ( $seen{ lc $field }++ ) {
                 @old = $self->_header_push($field, shift);
             } else {
                 @old = $self->_header_set($field, shift);
             }
-        } else {
-            @old = $self->_header_get($field);
         }
     }
     return @old    if wantarray;
@@ -201,14 +204,10 @@ sub _header_set {
     my $h = $self->{$field};
     my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
     if ( defined($val) ) {
-        my @new;
-        if ( ref($val) ne 'ARRAY' ) {
-            push( @new, $val );
+        if (ref $val eq 'ARRAY' && scalar(@$val) == 1) {
+            $val = $val->[0];
         }
-        else {
-            push( @new, @$val );
-        }
-        $self->{$field} = @new > 1 ? \@new : $new[0];
+        $self->{$field} = $val;
     } else {
         delete $self->{$field};
     }
