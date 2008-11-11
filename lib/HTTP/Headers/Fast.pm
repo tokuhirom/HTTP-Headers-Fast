@@ -195,13 +195,16 @@ sub _header_push {
     $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
-    my @old;
     if (ref($h) eq 'ARRAY') {
+        my @old = @$h;
         push @$h, ref $val ne 'ARRAY' ? $val : @$val;
-        return @$h;
+        return @old;
     } elsif (defined $h) {
         $self->{$field} = [$h, ref $val ne 'ARRAY' ? $val : @$val ];
         return ($h);
+    } else {
+        $self->{$field} = ref $val ne 'ARRAY' ? $val : @$val;
+        return ();
     }
 }
 
