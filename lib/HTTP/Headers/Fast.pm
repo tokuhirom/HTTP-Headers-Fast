@@ -294,20 +294,22 @@ sub scan {
     }
 }
 
+sub _process_newline {
+    local $_ = shift;
+    my $endl = shift;
+    # must handle header values with embedded newlines with care
+    s/\s+$//;        # trailing newlines and space must go
+    s/\n\n+/\n/g;    # no empty lines
+    s/\n([^\040\t])/\n $1/g; # intial space for continuation
+    s/\n/$endl/g;    # substitute with requested line ending
+    $_;
+}
+
 sub as_string {
     my ( $self, $endl ) = @_;
     $endl = "\n" unless defined $endl;
 
     my @result = ();
-    my $process_newline = sub {
-        local $_ = shift;
-        # must handle header values with embedded newlines with care
-        s/\s+$//;        # trailing newlines and space must go
-        s/\n\n+/\n/g;    # no empty lines
-        s/\n([^\040\t])/\n $1/g; # intial space for continuation
-        s/\n/$endl/g;    # substitute with requested line ending
-        $_;
-    };
     my @sorted = $self->_sorted_field_names;
     for my $key ( @sorted ) {
         next if index($key, '_') == 0;
@@ -317,7 +319,7 @@ sub as_string {
                 my $field = $standard_case{$key} || $key;
                 $field =~ s/^://;
                 if ( index($val, "\n") >= 0 ) {
-                    $val = $process_newline->($val);
+                    $val = _process_newline($val, $endl);
                 }
                 push @result, $field . ': ' . $val;
             }
@@ -325,7 +327,7 @@ sub as_string {
             my $field = $standard_case{$key} || $key;
             $field =~ s/^://;
             if ( index($vals, "\n") >= 0 ) {
-                $vals = $process_newline->($vals);
+                $vals = _process_newline($vals, $endl);
             }
             push @result, $field . ': ' . $vals;
         }
