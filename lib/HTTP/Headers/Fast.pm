@@ -295,7 +295,7 @@ sub header_field_names {
 sub scan {
     my ( $self, $sub ) = @_;
     for my $key ( $self->_sorted_field_names ) {
-        next if index($key, '_') == 0;
+        next if substr($key, 0, 1) eq '_';
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
             for my $val (@$vals) {
