@@ -20,7 +20,7 @@ my @cases = (
         my $h = HTTP::Headers->new(foo => "bar", foo => "baaaaz", Foo => "baz");
         my $f = HTTP::Headers::Fast->new(foo => "bar", foo => "baaaaz", Foo => "baz");
         cmpthese(
-            10000 => {
+            100000 => {
                 orig => sub { $h->as_string },
                 fast => sub { $f->as_string },
             },

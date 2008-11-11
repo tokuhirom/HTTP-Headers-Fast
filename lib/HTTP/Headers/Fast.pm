@@ -201,8 +201,9 @@ sub header_field_names {
 
 sub scan {
     my ( $self, $sub ) = @_;
-    for my $key ( $self->_sorted_field_names ) {
-        next if $key =~ /^_/;
+    my @sorted = $self->_sorted_field_names;
+    for my $key ( @sorted ) {
+        next if index($key, '_') == 0;
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
             for my $val (@$vals) {
@@ -220,20 +221,37 @@ sub as_string {
     $endl = "\n" unless defined $endl;
 
     my @result = ();
-    $self->scan(
-        sub {
-            my ( $field, $val ) = @_;
-            $field =~ s/^://;
-            if ( index($val, "\n") >= 0 ) {
-                # must handle header values with embedded newlines with care
-                $val =~ s/\s+$//;        # trailing newlines and space must go
-                $val =~ s/\n\n+/\n/g;    # no empty lines
-                $val =~ s/\n([^\040\t])/\n $1/g; # intial space for continuation
-                $val =~ s/\n/$endl/g;    # substitute with requested line ending
+    my $process_newline = sub {
+        local $_ = shift;
+        # must handle header values with embedded newlines with care
+        s/\s+$//;        # trailing newlines and space must go
+        s/\n\n+/\n/g;    # no empty lines
+        s/\n([^\040\t])/\n $1/g; # intial space for continuation
+        s/\n/$endl/g;    # substitute with requested line ending
+        $_;
+    };
+    my @sorted = $self->_sorted_field_names;
+    for my $key ( @sorted ) {
+        next if index($key, '_') == 0;
+        my $vals = $self->{$key};
+        if ( ref($vals) eq 'ARRAY' ) {
+            for my $val (@$vals) {
+                my $field = $standard_case{$key} || $key;
+                $field =~ s/^://;
+                if ( index($val, "\n") >= 0 ) {
+                    $val = $process_newline->($val);
+                }
+                push @result, $field . ': ' . $val;
             }
-            push( @result, "$field: $val" );
+        } else {
+            my $field = $standard_case{$key} || $key;
+            $field =~ s/^://;
+            if ( index($vals, "\n") >= 0 ) {
+                $vals = $process_newline->($vals);
+            }
+            push @result, $field . ': ' . $vals;
         }
-    );
+    }
 
     join( $endl, @result, '' );
 }
