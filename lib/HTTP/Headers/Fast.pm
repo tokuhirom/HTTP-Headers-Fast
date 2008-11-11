@@ -201,12 +201,10 @@ sub header_field_names {
 
 sub scan {
     my ( $self, $sub ) = @_;
-    my $key;
     for my $key ( $self->_sorted_field_names ) {
         next if $key =~ /^_/;
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
-            my $val;
             for my $val (@$vals) {
                 $sub->( $standard_case{$key} || $key, $val );
             }
@@ -226,8 +224,7 @@ sub as_string {
         sub {
             my ( $field, $val ) = @_;
             $field =~ s/^://;
-            if ( $val =~ /\n/ ) {
-
+            if ( index($val, "\n") >= 0 ) {
                 # must handle header values with embedded newlines with care
                 $val =~ s/\s+$//;        # trailing newlines and space must go
                 $val =~ s/\n\n+/\n/g;    # no empty lines
