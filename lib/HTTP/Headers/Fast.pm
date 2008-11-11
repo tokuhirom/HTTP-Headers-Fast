@@ -368,21 +368,21 @@ sub _date_header {
     if ( defined $time ) {
         ($old) = $self->_header_set( $header, HTTP::Date::time2str($time) );
     } else {
-        ($old) = $self->_header_get($header);
+        ($old) = $self->_header_get($header, 1);
     }
     $old =~ s/;.*// if defined($old);
     HTTP::Date::str2time($old);
 }
 
-sub date                { shift->_date_header( 'Date',                @_ ); }
-sub expires             { shift->_date_header( 'Expires',             @_ ); }
-sub if_modified_since   { shift->_date_header( 'If-Modified-Since',   @_ ); }
-sub if_unmodified_since { shift->_date_header( 'If-Unmodified-Since', @_ ); }
-sub last_modified       { shift->_date_header( 'Last-Modified',       @_ ); }
+sub date                { shift->_date_header( 'date',                @_ ); }
+sub expires             { shift->_date_header( 'expires',             @_ ); }
+sub if_modified_since   { shift->_date_header( 'if-modified-since',   @_ ); }
+sub if_unmodified_since { shift->_date_header( 'if-unmodified-since', @_ ); }
+sub last_modified       { shift->_date_header( 'last-modified',       @_ ); }
 
 # This is used as a private LWP extension.  The Client-Date header is
 # added as a timestamp to a response when it has been received.
-sub client_date { shift->_date_header( 'Client-Date', @_ ); }
+sub client_date { shift->_date_header( 'client-date', @_ ); }
 
 # The retry_after field is dual format (can also be a expressed as
 # number of seconds from now), so we don't provide an easy way to
