@@ -1,6 +1,7 @@
 use strict;
 use warnings;
-use Test::More tests => 2;
+use Test::Warn;
+use Test::More tests => 4;
 use HTTP::Headers::Fast;
 use HTTP::Headers;
 
@@ -14,7 +15,10 @@ test 'header' => sub {
     my $h = $klass->new;
     $h->header('foo' => 'bar');
     $h->push_header('foo' => undef);
-    $h->header('foo');
+
+    return warning_like {
+        $h->header('foo');
+    } qr/uninitialized/;
 };
 
 test "push_header's return value" => sub {
