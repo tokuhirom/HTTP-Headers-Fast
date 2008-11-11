@@ -279,8 +279,7 @@ sub header_field_names {
 
 sub scan {
     my ( $self, $sub ) = @_;
-    my @sorted = $self->_sorted_field_names;
-    for my $key ( @sorted ) {
+    for my $key ( $self->_sorted_field_names ) {
         next if index($key, '_') == 0;
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
@@ -309,9 +308,8 @@ sub as_string {
     my ( $self, $endl ) = @_;
     $endl = "\n" unless defined $endl;
 
-    my @result = ();
-    my @sorted = $self->_sorted_field_names;
-    for my $key ( @sorted ) {
+    my @result;
+    for my $key ( $self->_sorted_field_names ) {
         next if index($key, '_') == 0;
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
