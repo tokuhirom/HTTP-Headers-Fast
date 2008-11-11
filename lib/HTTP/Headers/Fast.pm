@@ -101,6 +101,7 @@ sub clear {
 
 sub push_header {
     my $self = shift;
+
     if (@_ == 2) {
         $self->_header_push( @_ );
     } else {
@@ -194,18 +195,14 @@ sub _header_push {
     $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
-    my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
-    if ( defined($val) ) {
-        my @new = @old;
-        if ( ref($val) ne 'ARRAY' ) {
-            push( @new, $val );
-        }
-        else {
-            push( @new, @$val );
-        }
-        $self->{$field} = @new > 1 ? \@new : $new[0];
+    my @old;
+    if (ref($h) eq 'ARRAY') {
+        push @$h, ref $val ne 'ARRAY' ? $val : @$val;
+        return @$h;
+    } elsif (defined $h) {
+        $self->{$field} = [$h, ref $val ne 'ARRAY' ? $val : @$val ];
+        return ($h);
     }
-    return @old;
 }
 
 sub _header {
