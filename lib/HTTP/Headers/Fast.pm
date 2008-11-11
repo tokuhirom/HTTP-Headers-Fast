@@ -105,7 +105,7 @@ sub push_header {
         $self->_header_push( @_ );
     } else {
         while (@_) {
-            $self->_header( splice( @_, 0, 2 ), $OP_PUSH_H );
+            $self->_header_push( splice( @_, 0, 2 ) );
         }
     }
 }
@@ -204,8 +204,6 @@ sub _header_push {
             push( @new, @$val );
         }
         $self->{$field} = @new > 1 ? \@new : $new[0];
-    } else {
-        delete $self->{$field};
     }
     return @old;
 }
