@@ -14,12 +14,12 @@ our $TRANSLATE_UNDERSCORE = 1;
 #    - Response-Headers
 #    - Entity-Headers
 
-use Readonly;
-Readonly::Scalar my $OP_GET    => 0;
-Readonly::Scalar my $OP_SET    => 1;
-Readonly::Scalar my $OP_INIT   => 2;
-Readonly::Scalar my $OP_PUSH   => 3;
-Readonly::Scalar my $OP_PUSH_H => 4;
+# yappo says "Readonly sucks".
+my $OP_GET    = 0;
+my $OP_SET    = 1;
+my $OP_INIT   = 2;
+my $OP_PUSH   = 3;
+my $OP_PUSH_H = 4;
 
 my @general_headers = qw(
   Cache-Control Connection Date Pragma Trailer Transfer-Encoding Upgrade
