@@ -101,9 +101,12 @@ sub clear {
 
 sub push_header {
     my $self = shift;
-    return $self->_header( @_, $OP_PUSH_H ) if @_ == 2;
-    while (@_) {
-        $self->_header( splice( @_, 0, 2 ), $OP_PUSH_H );
+    if (@_ == 2) {
+        $self->_header_push( @_ );
+    } else {
+        while (@_) {
+            $self->_header( splice( @_, 0, 2 ), $OP_PUSH_H );
+        }
     }
 }
 
@@ -140,7 +143,7 @@ sub remove_content_headers {
     $c;
 }
 
-my $standardize_field_name = sub {
+sub _standardize_field_name {
     my $field = shift;
     $field =~ tr/_/-/ if $TRANSLATE_UNDERSCORE;
     my $old = $field;
@@ -151,12 +154,12 @@ my $standardize_field_name = sub {
         $standard_case{$field} = $old;
     }
     return $field;
-};
+}
 
 sub _header_get {
     my ($self, $field) = @_;
 
-    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+    $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
     my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
@@ -166,7 +169,7 @@ sub _header_get {
 sub _header_set {
     my ($self, $field, $val) = @_;
 
-    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+    $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
     my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
@@ -188,7 +191,7 @@ sub _header_set {
 sub _header_push {
     my ($self, $field, $val) = @_;
 
-    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+    $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
     my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
@@ -210,7 +213,7 @@ sub _header_push {
 sub _header {
     my ($self, $field, $val, $op) = @_;
 
-    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+    $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     $op ||= defined($val) ? $OP_SET : $OP_GET;
     if ( $op == $OP_PUSH_H ) {
