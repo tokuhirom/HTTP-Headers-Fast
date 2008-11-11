@@ -130,20 +130,33 @@ sub remove_content_headers {
     $c;
 }
 
+my $standardize_field_name = sub {
+    my $field = shift;
+    $field =~ tr/_/-/ if $TRANSLATE_UNDERSCORE;
+    my $old = $field;
+    $field = lc $field;
+    unless ( defined $standard_case{$field} ) {
+        # generate a %standard_case entry for this field
+        $old =~ s/\b(\w)/\u$1/g;
+        $standard_case{$field} = $old;
+    }
+    return $field;
+};
+
+sub _header_get {
+    my ($self, $field) = @_;
+
+    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+
+    my $h = $self->{$field};
+    my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
+    return @old;
+}
+
 sub _header {
     my ( $self, $field, $val, $op ) = @_;
 
-    unless ( $field =~ /^:/ ) {
-        $field =~ tr/_/-/ if $TRANSLATE_UNDERSCORE;
-        my $old = $field;
-        $field = lc $field;
-        unless ( defined $standard_case{$field} ) {
-
-            # generate a %standard_case entry for this field
-            $old =~ s/\b(\w)/\u$1/g;
-            $standard_case{$field} = $old;
-        }
-    }
+    $field = $standardize_field_name->($field) unless $field =~ /^:/;
 
     $op ||= defined($val) ? $OP_SET : $OP_GET;
     if ( $op == $OP_PUSH_H ) {
@@ -271,7 +284,7 @@ else {
 sub _date_header {
     require HTTP::Date;
     my ( $self, $header, $time ) = @_;
-    my ($old) = $self->_header($header);
+    my ($old) = $self->_header_get($header);
     if ( defined $time ) {
         $self->_header( $header, HTTP::Date::time2str($time) );
     }
