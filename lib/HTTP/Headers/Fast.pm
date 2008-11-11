@@ -153,6 +153,28 @@ sub _header_get {
     return @old;
 }
 
+sub _header_set {
+    my ($self, $field, $val) = @_;
+
+    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+
+    my $h = $self->{$field};
+    my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
+    if ( defined($val) ) {
+        my @new;
+        if ( ref($val) ne 'ARRAY' ) {
+            push( @new, $val );
+        }
+        else {
+            push( @new, @$val );
+        }
+        $self->{$field} = @new > 1 ? \@new : $new[0];
+    } else {
+        delete $self->{$field};
+    }
+    return @old;
+}
+
 sub _header {
     my ( $self, $field, $val, $op ) = @_;
 
@@ -367,7 +389,7 @@ for my $key (qw/content-length content-language content-encoding title user-agen
     *{$meth} = sub {
         my $self = shift;
         if (@_) {
-            ( $self->_header( $key,   @_ ) )[0]
+            ( $self->_header_set( $key, @_ ) )[0]
         } else {
             ( $self->_header_get($key) )[0];
         }
