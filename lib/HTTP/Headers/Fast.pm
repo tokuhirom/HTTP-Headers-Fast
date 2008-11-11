@@ -201,6 +201,7 @@ sub _header_push_no_return {
     } else {
         $self->{$field} = ref $val ne 'ARRAY' ? $val : @$val;
     }
+    return;
 }
 
 sub _header_push {
