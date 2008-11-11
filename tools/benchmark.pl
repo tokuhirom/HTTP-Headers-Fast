@@ -35,6 +35,30 @@ my @cases = (
             },
         );
     },
+    get_date => sub {
+        my $h = HTTP::Headers->new;
+        $h->date(1226370757);
+        my $f = HTTP::Headers::Fast->new;
+        $f->date(1226370757);
+
+        cmpthese(
+            10000 => {
+                orig => sub { $h->date },
+                fast => sub { $f->date },
+            },
+        );
+    },
+    set_date => sub {
+        my $h = HTTP::Headers->new;
+        my $f = HTTP::Headers::Fast->new;
+
+        cmpthese(
+            10000 => {
+                orig => sub { $h->date(1226370757) },
+                fast => sub { $f->date(1226370757) },
+            },
+        );
+    },
     scan => sub {
         my $h = HTTP::Headers->new(%source);
         my $f = HTTP::Headers::Fast->new(%source);
