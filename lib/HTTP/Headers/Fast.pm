@@ -275,7 +275,7 @@ if ( eval { require Storable; 1 } ) {
 else {
     *clone = sub {
         my $self  = shift;
-        my $clone = new HTTP::Headers;
+        my $clone = new HTTP::Headers::Fast;
         $self->scan( sub { $clone->push_header(@_); } );
         $clone;
     };
