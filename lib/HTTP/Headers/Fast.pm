@@ -103,10 +103,10 @@ sub push_header {
     my $self = shift;
 
     if (@_ == 2) {
-        $self->_header_push( @_ );
+        $self->_header_push_no_return( @_ );
     } else {
         while (@_) {
-            $self->_header_push( splice( @_, 0, 2 ) );
+            $self->_header_push_no_return( splice( @_, 0, 2 ) );
         }
     }
 }
@@ -187,6 +187,21 @@ sub _header_set {
         delete $self->{$field};
     }
     return @old;
+}
+
+sub _header_push_no_return {
+    my ($self, $field, $val) = @_;
+
+    $field = _standardize_field_name($field) unless $field =~ /^:/;
+
+    my $h = $self->{$field};
+    if (ref($h) eq 'ARRAY') {
+        push @$h, ref $val ne 'ARRAY' ? $val : @$val;
+    } elsif (defined $h) {
+        $self->{$field} = [$h, ref $val ne 'ARRAY' ? $val : @$val ];
+    } else {
+        $self->{$field} = ref $val ne 'ARRAY' ? $val : @$val;
+    }
 }
 
 sub _header_push {
