@@ -106,7 +106,7 @@ sub push_header {
         $self->_header_push( @_ );
     } else {
         while (@_) {
-            $self->_header_push( splice( @_, 0, $OP_PUSH_H ) );
+            $self->_header_push( splice( @_, 0, 2 ) );
         }
     }
 }
