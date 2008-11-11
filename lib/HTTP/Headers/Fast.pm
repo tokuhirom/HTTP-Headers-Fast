@@ -18,8 +18,6 @@ our $TRANSLATE_UNDERSCORE = 1;
 my $OP_GET    = 0;
 my $OP_SET    = 1;
 my $OP_INIT   = 2;
-my $OP_PUSH   = 3;
-my $OP_PUSH_H = 4;
 
 my @general_headers = qw(
   Cache-Control Connection Date Pragma Trailer Transfer-Encoding Upgrade
@@ -229,22 +227,6 @@ sub _header {
     $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     $op ||= defined($val) ? $OP_SET : $OP_GET;
-    if ( $op == $OP_PUSH_H ) {
-
-        # Like PUSH but where we don't care about the return value
-        if ( exists $self->{$field} ) {
-            my $h = $self->{$field};
-            if ( ref($h) eq 'ARRAY' ) {
-                push( @$h, ref($val) eq "ARRAY" ? @$val : $val );
-            }
-            else {
-                $self->{$field} = [ $h, ref($val) eq "ARRAY" ? @$val : $val ];
-            }
-            return;
-        }
-        $self->{$field} = $val;
-        return;
-    }
 
     my $h = $self->{$field};
     my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );

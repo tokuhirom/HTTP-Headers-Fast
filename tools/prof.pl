@@ -10,4 +10,4 @@ my $f = HTTP::Headers::Fast->new(
     'Status'         => 200,
 );
 
-for (0..100) { $f->as_string }
+for (0..100) { $f->push_header('X-Foo', 3) }
