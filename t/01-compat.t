@@ -1,12 +1,12 @@
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 2;
 use HTTP::Headers::Fast;
 use HTTP::Headers;
 
 sub test($&) {
     my ($title, $code) = @_;
-    is $code->('HTTP::Headers::Fast'), $code->('HTTP::Headers');
+    is $code->('HTTP::Headers::Fast'), $code->('HTTP::Headers'), $title;
 }
 
 test 'header' => sub {
