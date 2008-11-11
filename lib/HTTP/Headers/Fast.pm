@@ -75,14 +75,12 @@ sub header {
     my %seen;
     while (@_) {
         my $field = shift;
-        my $method;
         if (@_) {
             if ( $seen{ lc $field }++ ) {
-                $method = '_header_push';
+                @old = $self->_header_push($field, shift);
             } else {
-                $method = '_header_set';
+                @old = $self->_header_set($field, shift);
             }
-            @old = $self->$method($field, shift);
         } else {
             @old = $self->_header_get($field);
         }
@@ -436,7 +434,8 @@ for my $key (qw/content-length content-language content-encoding title user-agen
         if (@_) {
             ( $self->_header_set( $key, @_ ) )[0]
         } else {
-            ( $self->_header_get($key, 1) )[0];
+            my $h = $self->{$key};
+            (ref($h) eq 'ARRAY') ? $h->[0] : $h;
         }
     };
 }
