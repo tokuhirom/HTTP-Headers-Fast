@@ -82,11 +82,10 @@ sub header {
             } else {
                 $method = '_header_set';
             }
+            @old = $self->$method($field, shift);
         } else {
-            $method = '_header_get';
+            @old = $self->_header_get($field);
         }
-        
-        @old = $self->$method($field, shift);
     }
     return @old    if wantarray;
     return $old[0] if @old <= 1;
@@ -172,13 +171,12 @@ sub _standardize_field_name {
 }
 
 sub _header_get {
-    my ($self, $field) = @_;
+    my ($self, $field, $skip_standardize) = @_;
 
-    $field = _standardize_field_name($field) unless $field =~ /^:/;
+    $field = _standardize_field_name($field) unless $skip_standardize || $field =~ /^:/;
 
     my $h = $self->{$field};
-    my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
-    return @old;
+    return (ref($h) eq 'ARRAY') ? @$h : ( defined($h) ? ($h) : () );
 }
 
 sub _header_set {
@@ -438,7 +436,7 @@ for my $key (qw/content-length content-language content-encoding title user-agen
         if (@_) {
             ( $self->_header_set( $key, @_ ) )[0]
         } else {
-            ( $self->_header_get($key) )[0];
+            ( $self->_header_get($key, 1) )[0];
         }
     };
 }
