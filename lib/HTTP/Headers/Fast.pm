@@ -101,13 +101,21 @@ sub clear {
 sub push_header {
     my $self = shift;
 
-    if (@_ == 2) {
-        $self->_header_push_no_return( @_ );
-    } else {
-        while (@_) {
-            $self->_header_push_no_return( splice( @_, 0, 2 ) );
-        }
+    while ( my ($field, $val) = splice( @_, 0, 2 ) ) {
+        $field = _standardize_field_name($field) unless $field =~ /^:/;
+
+    my $h = $self->{$field};
+    if (!defined $h) {
+        $h = [];
+        $self->{$field} = $h;
+    } elsif (ref $h ne 'ARRAY') {
+        $h = [ $h ];
+        $self->{$field} = $h;
     }
+    
+        push @$h, ref $val ne 'ARRAY' ? $val : @$val;
+    }
+    return ();
 }
 
 sub init_header {
@@ -143,9 +151,15 @@ sub remove_content_headers {
     $c;
 }
 
+my %field_name;
 sub _standardize_field_name {
     my $field = shift;
+
     $field =~ tr/_/-/ if $TRANSLATE_UNDERSCORE;
+    if (my $cache = $field_name{$field}) {
+        return $cache;
+    }
+
     my $old = $field;
     $field = lc $field;
     unless ( defined $standard_case{$field} ) {
@@ -153,6 +167,7 @@ sub _standardize_field_name {
         $old =~ s/\b(\w)/\u$1/g;
         $standard_case{$field} = $old;
     }
+    $field_name{$old} = $field;
     return $field;
 }
 
