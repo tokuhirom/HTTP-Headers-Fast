@@ -98,19 +98,35 @@ sub clear {
 sub push_header {
     my $self = shift;
 
-    while ( my ($field, $val) = splice( @_, 0, 2 ) ) {
+    if (@_ == 2) {
+        my ($field, $val) = @_;
         $field = _standardize_field_name($field) unless $field =~ /^:/;
 
-    my $h = $self->{$field};
-    if (!defined $h) {
-        $h = [];
-        $self->{$field} = $h;
-    } elsif (ref $h ne 'ARRAY') {
-        $h = [ $h ];
-        $self->{$field} = $h;
-    }
+        my $h = $self->{$field};
+        if (!defined $h) {
+            $h = [];
+            $self->{$field} = $h;
+        } elsif (ref $h ne 'ARRAY') {
+            $h = [ $h ];
+            $self->{$field} = $h;
+        }
     
         push @$h, ref $val ne 'ARRAY' ? $val : @$val;
+    } else {
+        while ( my ($field, $val) = splice( @_, 0, 2 ) ) {
+            $field = _standardize_field_name($field) unless $field =~ /^:/;
+
+            my $h = $self->{$field};
+            if (!defined $h) {
+                $h = [];
+                $self->{$field} = $h;
+            } elsif (ref $h ne 'ARRAY') {
+                $h = [ $h ];
+                $self->{$field} = $h;
+            }
+    
+            push @$h, ref $val ne 'ARRAY' ? $val : @$val;
+        }
     }
     return ();
 }
