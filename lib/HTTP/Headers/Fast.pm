@@ -364,9 +364,11 @@ else {
 sub _date_header {
     require HTTP::Date;
     my ( $self, $header, $time ) = @_;
-    my ($old) = $self->_header_get($header);
+    my $old;
     if ( defined $time ) {
-        $self->_header_set( $header, HTTP::Date::time2str($time) );
+        ($old) = $self->_header_set( $header, HTTP::Date::time2str($time) );
+    } else {
+        ($old) = $self->_header_get($header);
     }
     $old =~ s/;.*// if defined($old);
     HTTP::Date::str2time($old);
