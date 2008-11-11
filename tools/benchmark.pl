@@ -18,9 +18,20 @@ my @cases = (
         my $f = HTTP::Headers::Fast->new;
 
         cmpthese(
-            1000000 => {
+            10000 => {
                 orig => sub { $h->push_header('X-Foo' => 1) },
                 fast => sub { $f->push_header('X-Foo' => 1) },
+            },
+        );
+    },
+    push_header_many => sub {
+        my $h = HTTP::Headers->new;
+        my $f = HTTP::Headers::Fast->new;
+
+        cmpthese(
+            10000 => {
+                orig => sub { $h->push_header('X-Foo' => 1, 'X-Bar' => 2) },
+                fast => sub { $f->push_header('X-Foo' => 1, 'X-Bar' => 2) },
             },
         );
     },
