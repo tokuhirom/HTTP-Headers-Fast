@@ -18,6 +18,7 @@ our $TRANSLATE_UNDERSCORE = 1;
 my $OP_GET    = 0;
 my $OP_SET    = 1;
 my $OP_INIT   = 2;
+my $OP_PUSH   = 3;
 
 my @general_headers = qw(
   Cache-Control Connection Date Pragma Trailer Transfer-Encoding Upgrade
