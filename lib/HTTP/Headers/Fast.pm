@@ -369,8 +369,7 @@ for my $key (qw/content-length content-language content-encoding title user-agen
         if (@_) {
             ( $self->_header( $key,   @_ ) )[0]
         } else {
-            my $h = $self->{$key};
-            return (ref($h) eq 'ARRAY') ? $h->[0] : $h;
+            ( $self->_header_get($key) )[0];
         }
     };
 }
