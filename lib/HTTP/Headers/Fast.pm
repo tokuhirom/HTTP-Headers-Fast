@@ -76,8 +76,18 @@ sub header {
     my %seen;
     while (@_) {
         my $field = shift;
-        my $op = @_ ? ( $seen{ lc($field) }++ ? $OP_PUSH : $OP_SET ) : $OP_GET;
-        @old = $self->_header( $field, shift, $op );
+        my $method;
+        if (@_) {
+            if ( $seen{ lc $field }++ ) {
+                $method = '_header_push';
+            } else {
+                $method = '_header_set';
+            }
+        } else {
+            $method = '_header_get';
+        }
+        
+        @old = $self->$method($field, shift);
     }
     return @old    if wantarray;
     return $old[0] if @old <= 1;
@@ -175,8 +185,30 @@ sub _header_set {
     return @old;
 }
 
+sub _header_push {
+    my ($self, $field, $val) = @_;
+
+    $field = $standardize_field_name->($field) unless $field =~ /^:/;
+
+    my $h = $self->{$field};
+    my @old = ref($h) eq 'ARRAY' ? @$h : ( defined($h) ? ($h) : () );
+    if ( defined($val) ) {
+        my @new = @old;
+        if ( ref($val) ne 'ARRAY' ) {
+            push( @new, $val );
+        }
+        else {
+            push( @new, @$val );
+        }
+        $self->{$field} = @new > 1 ? \@new : $new[0];
+    } else {
+        delete $self->{$field};
+    }
+    return @old;
+}
+
 sub _header {
-    my ( $self, $field, $val, $op ) = @_;
+    my ($self, $field, $val, $op) = @_;
 
     $field = $standardize_field_name->($field) unless $field =~ /^:/;
 
