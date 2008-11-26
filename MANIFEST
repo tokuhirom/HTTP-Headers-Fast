@@ -16,6 +16,7 @@ inc/Test/Base/Filter.pm
 inc/Test/Builder.pm
 inc/Test/Builder/Module.pm
 inc/Test/More.pm
+inc/Test/Warn.pm
 inc/YAML.pm
 lib/HTTP/Headers/Fast.pm
 Makefile.PL
@@ -23,6 +24,8 @@ MANIFEST			This list of files
 META.yml
 README
 t/00_compile.t
+t/01-compat.t
+t/headers.t
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t
