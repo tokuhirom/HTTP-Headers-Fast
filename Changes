@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.03
+
+        - load Storable lazily. Storable doesn't needed in a lot of case.
+
 0.02
 
         - updated docs(by lestrrat++)
