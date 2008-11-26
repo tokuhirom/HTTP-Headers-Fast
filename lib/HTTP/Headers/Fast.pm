@@ -2,9 +2,9 @@ package HTTP::Headers::Fast;
 use strict;
 use warnings;
 use 5.00800;
-our $VERSION = '0.01';
 use Carp ();
-use base qw/HTTP::Headers/;
+
+our $VERSION = '0.01';
 
 our $TRANSLATE_UNDERSCORE = 1;
 
@@ -488,21 +488,89 @@ __END__
 
 =head1 NAME
 
-HTTP::Headers::Fast -
+HTTP::Headers::Fast - faster implementation of HTTP::Headers
 
 =head1 SYNOPSIS
 
   use HTTP::Headers::Fast;
+  # and, same as HTTP::Headers.
 
 =head1 DESCRIPTION
 
-HTTP::Headers::Fast is
+HTTP::Headers::Fast is a perl class for parsing/writing HTTP headers.
+
+The interface is same as HTTP::Headers.
+
+=head1 WHY YET ANOTHER ONE?
+
+HTTP::Headers is a very good.But, HTTP::Headers is bit slow.
+I need more fast implementation as soon as possible =)
+
+And, HTTP::Headers is a part of LWP.LWP has a lot of dependencies :( I want less dependencies.
+
+=head1 @ISA HACK
+
+    unshift @HTTP::Headers::Fast::ISA, 'HTTP::Headers';
+
+If you want to cheat the perl, copy and paste above code.
+
+=head1 BENCHMARK
+
+    HTTP::Headers 5.818, HTTP::Headers::Fast 0.01
+
+    -- push_header
+            Rate orig fast
+    orig 144928/s   -- -20%
+    fast 181818/s  25%   --
+
+    -- push_header_many
+            Rate orig fast
+    orig 74627/s   -- -16%
+    fast 89286/s  20%   --
+
+    -- get_date
+            Rate orig fast
+    orig 34884/s   -- -14%
+    fast 40541/s  16%   --
+
+    -- set_date
+            Rate orig fast
+    orig 21505/s   -- -19%
+    fast 26525/s  23%   --
+
+    -- scan
+            Rate orig fast
+    orig 57471/s   --  -1%
+    fast 57803/s   1%   --
+
+    -- get_header
+            Rate orig fast
+    orig 120337/s   -- -24%
+    fast 157729/s  31%   --
+
+    -- set_header
+            Rate orig fast
+    orig  79745/s   -- -30%
+    fast 113766/s  43%   --
+
+    -- get_content_length
+            Rate orig fast
+    orig 182482/s   -- -77%
+    fast 793651/s 335%   --
+
+    -- as_string
+            Rate orig fast
+    orig 23753/s   -- -41%
+    fast 40161/s  69%   --
 
 =head1 AUTHOR
 
-Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
+    Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
+    Daisuke Maki
 
 =head1 SEE ALSO
+
+L<HTTP::Headers>
 
 =head1 LICENSE
 

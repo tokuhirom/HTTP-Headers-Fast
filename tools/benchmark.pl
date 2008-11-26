@@ -29,7 +29,7 @@ my @cases = (
         my $f = HTTP::Headers::Fast->new;
 
         cmpthese(
-            30000 => {
+            300000 => {
                 orig => sub { $h->push_header('X-Foo' => 1, 'X-Bar' => 2) },
                 fast => sub { $f->push_header('X-Foo' => 1, 'X-Bar' => 2) },
             },
@@ -53,7 +53,7 @@ my @cases = (
         my $f = HTTP::Headers::Fast->new;
 
         cmpthese(
-            10000 => {
+            100000 => {
                 orig => sub { $h->date(1226370757) },
                 fast => sub { $f->date(1226370757) },
             },
@@ -115,6 +115,7 @@ my @cases = (
     },
 );
 my $only = shift @ARGV;
+print "HTTP::Headers $HTTP::Headers::VERSION, HTTP::Headers::Fast $HTTP::Headers::Fast::VERSION\n";
 while (my ($name, $code) = splice(@cases, 0, 2)) {
     next if $only && $only ne $name;
     print "-- $name\n";
