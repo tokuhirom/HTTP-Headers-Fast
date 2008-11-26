@@ -26,6 +26,7 @@ README
 t/00_compile.t
 t/01-compat.t
 t/headers.t
+t/lazy_load_for_storable.t
 xt/01_podspell.t
 xt/02_perlcritic.t
 xt/03_pod.t
