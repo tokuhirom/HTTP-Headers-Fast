@@ -103,6 +103,17 @@ my @cases = (
             },
         );
     },
+    as_string_without_sort => sub {
+        my $h = HTTP::Headers->new(%source);
+        my $f = HTTP::Headers::Fast->new(%source);
+        cmpthese(
+            100000 => {
+                orig           => sub { $h->as_string },
+                fast_as_str    => sub { $f->as_string },
+                fast_as_str_wo => sub { $f->as_string_without_sort },
+            },
+        );
+    },
     as_string => sub {
         my $h = HTTP::Headers->new(%source);
         my $f = HTTP::Headers::Fast->new(%source);
