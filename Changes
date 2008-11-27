@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.04
+
+        - added as_string_without_sort
+
 0.03
 
         - load Storable lazily. Storable doesn't needed in a lot of case.
