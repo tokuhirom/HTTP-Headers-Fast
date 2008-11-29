@@ -4,7 +4,7 @@ use warnings;
 use 5.00800;
 use Carp ();
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our $TRANSLATE_UNDERSCORE = 1;
 
@@ -514,8 +514,6 @@ The interface is same as HTTP::Headers.
 =head1 WHY YET ANOTHER ONE?
 
 HTTP::Headers is a very good. But I needed a faster implementation, fast  =)
-
-HTTP::Headers is also a part of LWP, but I only needed HTTP::Headers. I didn't want to require more modules than necessary.
 
 =head1 ADDITIONAL METHODS
 

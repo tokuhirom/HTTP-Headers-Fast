@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.05
+
+        - hmm... this module requires HTTP::Date
+
 0.04
 
         - added as_string_without_sort

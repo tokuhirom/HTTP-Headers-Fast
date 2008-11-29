@@ -2,6 +2,8 @@ use inc::Module::Install;
 name 'HTTP-Headers-Fast';
 all_from 'lib/HTTP/Headers/Fast.pm';
 
+requires 'HTTP::Date';
+
 tests 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t';
 test_requires 'Test::Warn';
 test_requires 'Test::More';
