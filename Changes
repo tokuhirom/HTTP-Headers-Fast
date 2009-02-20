@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.08
+
+        - no changes...
+
 0.07
 
         - don't depend to Test::Warn
