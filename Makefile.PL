@@ -5,7 +5,6 @@ all_from 'lib/HTTP/Headers/Fast.pm';
 requires 'HTTP::Date';
 
 tests 't/*.t t/*/*.t t/*/*/*.t t/*/*/*/*.t';
-test_requires 'Test::Warn';
 test_requires 'Test::More';
 test_requires 'YAML';
 author_tests 'xt';
