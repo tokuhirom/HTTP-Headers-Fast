@@ -1,5 +1,10 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.10
+
+        - oops. I forgot to remove 'use Test::Warn' orz.
+          (reported by miyagawa++)
+
 0.09
 
         - no changes...
