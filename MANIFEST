@@ -24,6 +24,7 @@ META.yml
 README
 t/00_compile.t
 t/01-compat.t
+t/02-isa.t
 t/as_string_without_sort.t
 t/headers.t
 t/lazy_load_for_storable.t
