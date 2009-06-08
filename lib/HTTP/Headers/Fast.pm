@@ -68,6 +68,12 @@ sub new {
     $self;
 }
 
+sub isa {
+    my ($self, $klass) = @_;
+    my $proto = ref $self || $self;
+    return ($proto eq $klass || $klass eq 'HTTP::Headers') ? 1 : 0;
+}
+
 sub header {
     my $self = shift;
     Carp::croak('Usage: $h->header($field, ...)') unless @_;
