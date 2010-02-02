@@ -220,22 +220,6 @@ sub _header_set {
     return @old;
 }
 
-sub _header_push_no_return {
-    my ($self, $field, $val) = @_;
-
-    $field = _standardize_field_name($field) unless $field =~ /^:/;
-
-    my $h = $self->{$field};
-    if (ref($h) eq 'ARRAY') {
-        push @$h, ref $val ne 'ARRAY' ? $val : @$val;
-    } elsif (defined $h) {
-        $self->{$field} = [$h, ref $val ne 'ARRAY' ? $val : @$val ];
-    } else {
-        $self->{$field} = ref $val ne 'ARRAY' ? $val : @$val;
-    }
-    return;
-}
-
 sub _header_push {
     my ($self, $field, $val) = @_;
 
