@@ -220,22 +220,6 @@ sub _header_set {
     return @old;
 }
 
-sub _header_push_no_return {
-    my ($self, $field, $val) = @_;
-
-    $field = _standardize_field_name($field) unless $field =~ /^:/;
-
-    my $h = $self->{$field};
-    if (ref($h) eq 'ARRAY') {
-        push @$h, ref $val ne 'ARRAY' ? $val : @$val;
-    } elsif (defined $h) {
-        $self->{$field} = [$h, ref $val ne 'ARRAY' ? $val : @$val ];
-    } else {
-        $self->{$field} = ref $val ne 'ARRAY' ? $val : @$val;
-    }
-    return;
-}
-
 sub _header_push {
     my ($self, $field, $val) = @_;
 
@@ -285,22 +269,22 @@ sub _header {
 
 sub _sorted_field_names {
     my $self = shift;
-    return sort {
+    return [ sort {
         ( $header_order{$a} || 999 ) <=> ( $header_order{$b} || 999 )
           || $a cmp $b
-    } keys %$self;
+    } keys %$self ];
 }
 
 sub header_field_names {
     my $self = shift;
-    return map $standard_case{$_} || $_, $self->_sorted_field_names
+    return map $standard_case{$_} || $_, @{ $self->_sorted_field_names }
       if wantarray;
     return keys %$self;
 }
 
 sub scan {
     my ( $self, $sub ) = @_;
-    for my $key ( $self->_sorted_field_names ) {
+    for my $key (@{ $self->_sorted_field_names }) {
         next if substr($key, 0, 1) eq '_';
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
@@ -357,7 +341,7 @@ sub _as_string {
 sub as_string {
     my ( $self, $endl ) = @_;
     $endl = "\n" unless defined $endl;
-    $self->_as_string($endl, [$self->_sorted_field_names]);
+    $self->_as_string($endl, $self->_sorted_field_names);
 }
 
 sub as_string_without_sort {
