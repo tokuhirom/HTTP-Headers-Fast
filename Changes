@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.13
+
+        - fixed dependency issue
+
 0.12
         - Strip out empty lines separated by CRLF.(markstos)
             Before the patch, an embedded CRLF would be allowed through with a
