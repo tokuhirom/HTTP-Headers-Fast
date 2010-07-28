@@ -2,6 +2,7 @@
 
 use strict;
 use Test qw(plan ok);
+use Test::Requires 'URI';
 
 plan tests => 164;
 
