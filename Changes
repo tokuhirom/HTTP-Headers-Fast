@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.14
+
+        - fixed packaging issue
+
 0.13
 
         - fixed dependency issue
