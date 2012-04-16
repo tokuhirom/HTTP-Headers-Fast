@@ -1,5 +1,9 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+0.16
+
+    - oops
+
 0.15
 
     - fixed deps
