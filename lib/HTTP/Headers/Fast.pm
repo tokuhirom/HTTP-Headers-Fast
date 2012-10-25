@@ -577,6 +577,8 @@ If you want HTTP::Headers::Fast to pretend like it's really HTTP::Headers, you c
     Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
     Daisuke Maki
 
+And HTTP::Headers' orignally written by Gisle Aas.
+
 =head1 THANKS TO
 
 markstos
