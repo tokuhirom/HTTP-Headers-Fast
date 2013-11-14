@@ -4,7 +4,7 @@ use warnings;
 use 5.00800;
 use Carp ();
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 our $TRANSLATE_UNDERSCORE = 1;
 
@@ -577,11 +577,11 @@ If you want HTTP::Headers::Fast to pretend like it's really HTTP::Headers, you c
     Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
     Daisuke Maki
 
-And HTTP::Headers' orignally written by Gisle Aas.
+And HTTP::Headers' originally written by Gisle Aas.
 
 =head1 THANKS TO
 
-markstos
+Markstos
 
 Tatsuhiko Miyagawa
 

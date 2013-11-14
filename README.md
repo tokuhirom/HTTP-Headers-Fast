@@ -85,11 +85,11 @@ If you want HTTP::Headers::Fast to pretend like it's really HTTP::Headers, you c
     Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
     Daisuke Maki
 
-And HTTP::Headers' orignally written by Gisle Aas.
+And HTTP::Headers' originally written by Gisle Aas.
 
 # THANKS TO
 
-markstos
+Markstos
 
 Tatsuhiko Miyagawa
 

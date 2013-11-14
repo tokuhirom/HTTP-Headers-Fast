@@ -2,6 +2,10 @@ Revision history for Perl extension HTTP::Headers::Fast
 
 {{$NEXT}}
 
+0.17 2013-11-14T04:51:31Z
+
+    - minil migrate
+
 0.16
 
     - oops
