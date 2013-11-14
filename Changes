@@ -1,5 +1,7 @@
 Revision history for Perl extension HTTP::Headers::Fast
 
+{{$NEXT}}
+
 0.16
 
     - oops
