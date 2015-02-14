@@ -2,9 +2,9 @@
 
 use strict;
 use Test qw(plan ok);
-use Test::Requires 'URI';
+use Test::Requires qw(URI);
 
-plan tests => 164;
+plan tests => 175;
 
 my($h, $h2);
 sub j { join("|", @_) }
@@ -288,13 +288,27 @@ Proxy-Authenticate: bar
 WWW-Authenticate: bar
 EOT
 
+# Try some bad field names
+my $file = __FILE__;
+my $line;
+$h = HTTP::Headers::Fast->new;
+eval {
+    $line = __LINE__; $h->header('foo:', 1);
+};
+ok($@, qr/^Illegal field name 'foo:' at \Q$file\E line $line/);
+eval {
+    $line = __LINE__; $h->header('', 2);
+};
+ok($@, qr/^Illegal field name '' at \Q$file\E line $line/);
+
 
 
 #---- old tests below -----
 
-$h = new HTTP::Headers::Fast
+$h = HTTP::Headers::Fast->new(
 	mime_version  => "1.0",
-	content_type  => "text/html";
+	content_type  => "text/html",
+    );
 $h->header(URI => "http://www.oslonett.no/");
 
 ok($h->header("MIME-Version"), "1.0");
@@ -364,7 +378,7 @@ F: foo<<
 EOT
 
 # Check for attempt to send a body
-$h = HTTP::Headers::Fast->new(
+$h = HTTP::Headers::Fast->new( 
     a => "foo\r\n\r\nevil body" ,
     b => "foo\015\012\015\012evil body" ,
     c => "foo\x0d\x0a\x0d\x0aevil body" ,
@@ -378,8 +392,8 @@ ok (
 
 # Check with FALSE $HTML::Headers::TRANSLATE_UNDERSCORE
 {
-    local($HTTP::Headers::Fast::TRANSLATE_UNDERSCORE);
-    $HTTP::Headers::Fast::TRANSLATE_UNDERSCORE = undef; # avoid -w warning
+    local($HTTP::Headers::TRANSLATE_UNDERSCORE);
+    $HTTP::Headers::TRANSLATE_UNDERSCORE = undef; # avoid -w warning
 
     $h = HTTP::Headers::Fast->new;
     $h->header(abc_abc   => "foo");
@@ -445,3 +459,19 @@ $h = HTTP::Headers::Fast->new(
     if_modified_since => "Sat, 29 Oct 1994 19:43:31 GMT; length=34343"
 );
 ok(gmtime($h->if_modified_since), "Sat Oct 29 19:43:31 1994");
+
+$h = HTTP::Headers::Fast->new();
+$h->content_type('text/plain');
+$h->content_length(4);
+$h->push_header('x-foo' => 'bar');
+$h->push_header('x-foo' => 'baz');
+ok(0+$h->flatten eq 8);
+ok([$h->flatten]->[0] eq 'Content-Length');
+ok([$h->flatten]->[1] eq 4);
+ok([$h->flatten]->[2] eq 'Content-Type');
+ok([$h->flatten]->[3] eq 'text/plain');
+ok([$h->flatten]->[4] eq 'X-Foo');
+ok([$h->flatten]->[5] eq 'bar');
+ok([$h->flatten]->[6] eq 'X-Foo');
+ok([$h->flatten]->[7] eq 'baz');
+
