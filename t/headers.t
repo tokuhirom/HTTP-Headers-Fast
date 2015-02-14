@@ -392,8 +392,8 @@ ok (
 
 # Check with FALSE $HTML::Headers::TRANSLATE_UNDERSCORE
 {
-    local($HTTP::Headers::TRANSLATE_UNDERSCORE);
-    $HTTP::Headers::TRANSLATE_UNDERSCORE = undef; # avoid -w warning
+    local($HTTP::Headers::Fast::TRANSLATE_UNDERSCORE);
+    $HTTP::Headers::Fast::TRANSLATE_UNDERSCORE = undef; # avoid -w warning
 
     $h = HTTP::Headers::Fast->new;
     $h->header(abc_abc   => "foo");
