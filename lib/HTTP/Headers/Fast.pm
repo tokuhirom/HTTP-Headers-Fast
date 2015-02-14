@@ -481,6 +481,19 @@ sub _basic_auth {
     return;
 }
 
+sub flatten {
+    my ( $self ) = @_;
+
+    (
+        map {
+            my $k = $_;
+            map {
+                ( $k => $_ )
+            } $self->header($_);
+        } $self->header_field_names
+    );
+}
+
 1;
 __END__
 
