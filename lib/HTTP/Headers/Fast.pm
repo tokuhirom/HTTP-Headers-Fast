@@ -405,6 +405,79 @@ sub content_type {
     wantarray ? @ct : $ct[0];
 }
 
+sub content_type_charset {
+    my $self = shift;
+    my $h = $self->{'content-type'};
+    $h = $h->[0] if ref($h);
+    $h = "" unless defined $h;
+    my @v = _split_header_words($h);
+    if (@v) {
+	my($ct, undef, %ct_param) = @{$v[0]};
+	my $charset = $ct_param{charset};
+	if ($ct) {
+	    $ct = lc($ct);
+	    $ct =~ s/\s+//;
+	}
+	if ($charset) {
+	    $charset = uc($charset);
+	    $charset =~ s/^\s+//;  $charset =~ s/\s+\z//;
+	    undef($charset) if $charset eq "";
+	}
+	return $ct, $charset if wantarray;
+	return $charset;
+    }
+    return undef, undef if wantarray;
+    return undef;
+}
+
+sub _split_header_words
+{
+    my(@val) = @_;
+    my @res;
+    for (@val) {
+	my @cur;
+	while (length) {
+	    if (s/^\s*(=*[^\s=;,]+)//) {  # 'token' or parameter 'attribute'
+		push(@cur, $1);
+		# a quoted value
+		if (s/^\s*=\s*\"([^\"\\]*(?:\\.[^\"\\]*)*)\"//) {
+		    my $val = $1;
+		    $val =~ s/\\(.)/$1/g;
+		    push(@cur, $val);
+		# some unquoted value
+		}
+		elsif (s/^\s*=\s*([^;,\s]*)//) {
+		    my $val = $1;
+		    $val =~ s/\s+$//;
+		    push(@cur, $val);
+		# no value, a lone token
+		}
+		else {
+		    push(@cur, undef);
+		}
+	    }
+	    elsif (s/^\s*,//) {
+		push(@res, [@cur]) if @cur;
+		@cur = ();
+	    }
+	    elsif (s/^\s*;// || s/^\s+//) {
+		# continue
+	    }
+	    else {
+		die "This should not happen: '$_'";
+	    }
+	}
+	push(@res, \@cur) if @cur;
+    }
+
+    for my $arr (@res) {
+	for (my $i = @$arr - 2; $i >= 0; $i -= 2) {
+	    $arr->[$i] = lc($arr->[$i]);
+	}
+    }
+    return @res;
+}
+
 sub content_is_html {
     my $self = shift;
     return $self->content_type eq 'text/html' || $self->content_is_xhtml;
