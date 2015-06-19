@@ -95,7 +95,7 @@ Tatsuhiko Miyagawa
 
 # SEE ALSO
 
-[HTTP::Headers](http://search.cpan.org/perldoc?HTTP::Headers)
+[HTTP::Headers](https://metacpan.org/pod/HTTP::Headers)
 
 # LICENSE
 
