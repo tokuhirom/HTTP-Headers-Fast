@@ -2,6 +2,11 @@ Revision history for Perl extension HTTP::Headers::Fast
 
 {{$NEXT}}
 
+0.18 2015-06-19T06:06:14Z
+
+    - import content_type_charset from HTTP::Headers. #5
+      (miyagawa)
+
 0.17 2013-11-14T04:51:31Z
 
     - minil migrate

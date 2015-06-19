@@ -65,7 +65,7 @@
          "web" : "https://github.com/tokuhirom/HTTP-Headers-Fast"
       }
    },
-   "version" : "0.17",
+   "version" : "0.18",
    "x_contributors" : [
       "yappo <yappo@d0d07461-0603-4401-acd4-de1884942a52>",
       "daisuke <daisuke@d0d07461-0603-4401-acd4-de1884942a52>",
