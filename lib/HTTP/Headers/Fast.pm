@@ -50,7 +50,7 @@ my @header_order =
 # Make alternative representations of @header_order.  This is used
 # for sorting and case matching.
 my %header_order;
-my %standard_case;
+our %standard_case;
 
 {
     my $i = 0;
