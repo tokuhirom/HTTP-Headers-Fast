@@ -2,6 +2,11 @@ Revision history for Perl extension HTTP::Headers::Fast
 
 {{$NEXT}}
 
+0.19 2015-08-20T05:17:30Z
+
+    - Make standard_case hash global to allow adding XS easily
+      (xsawyerx)
+
 0.18 2015-06-19T06:06:14Z
 
     - import content_type_charset from HTTP::Headers. #5

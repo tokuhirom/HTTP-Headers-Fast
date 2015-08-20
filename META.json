@@ -65,7 +65,7 @@
          "web" : "https://github.com/tokuhirom/HTTP-Headers-Fast"
       }
    },
-   "version" : "0.18",
+   "version" : "0.19",
    "x_contributors" : [
       "yappo <yappo@d0d07461-0603-4401-acd4-de1884942a52>",
       "daisuke <daisuke@d0d07461-0603-4401-acd4-de1884942a52>",
@@ -73,6 +73,7 @@
       "Mark Stosberg <mark@summersault.com>",
       "Mark Stosberg <mark@stosberg.com>",
       "Neil Bowers <neil@bowers.com>",
-      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>"
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
+      "Sawyer X <xsawyerx@cpan.org>"
    ]
 }
