@@ -351,9 +351,9 @@ sub as_string_without_sort {
 }
 
 sub _flatten {
-    my $self = shift;
+    my ($self, $keys) = @_;
     my @headers;
-    for my $key ( @{$_[0]} ) {
+    for my $key ( @{$keys} ) {
         next if substr($key, 0, 1) eq '_';
         my $vals = $self->{$key};
         if ( ref($vals) eq 'ARRAY' ) {
@@ -376,8 +376,9 @@ sub flatten {
     $_[0]->_flatten($_[0]->_sorted_field_names);
 }
 
+
 sub flatten_without_sort {
-    $_[0]->_flatten([keys(%{$_[0]})]);
+    $_[0]->_flatten([keys %{$_[0]}]);
 }
 
 {
@@ -708,3 +709,4 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
