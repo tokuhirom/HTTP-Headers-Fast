@@ -350,6 +350,37 @@ sub as_string_without_sort {
     $self->_as_string($endl, [keys(%$self)]);
 }
 
+sub _flatten {
+    my ($self, $keys) = @_;
+    my @headers;
+    for my $key ( @{$keys} ) {
+        next if substr($key, 0, 1) eq '_';
+        my $vals = $self->{$key};
+        if ( ref($vals) eq 'ARRAY' ) {
+            for my $val (@$vals) {
+                $val =~ s/\015\012[\040|\011]+/chr(32)/ge; # replace LWS with a single SP
+                $val =~ s/\015|\012//g; # remove CR and LF since the char is invalid here
+                push @headers, $standard_case{$key} || $key, $val;
+            }
+        }
+        else {
+            $vals =~ s/\015\012[\040|\011]+/chr(32)/ge; # replace LWS with a single SP
+            $vals =~ s/\015|\012//g; # remove CR and LF since the char is invalid here
+            push @headers, $standard_case{$key} || $key, $vals;
+        }
+    }
+    return \@headers;
+}
+
+sub flatten {
+    $_[0]->_flatten($_[0]->_sorted_field_names);
+}
+
+
+sub flatten_without_sort {
+    $_[0]->_flatten([keys %{$_[0]}]);
+}
+
 {
     my $storable_required;
     sub clone {
@@ -588,6 +619,16 @@ as_string method sorts the header names.But, sorting is bit slow.
 
 In this method, stringify the instance of HTTP::Headers::Fast without sorting.
 
+=item flatten
+
+returns PSGI compatible arrayref of header.
+
+    my $headers:ArrayRef = $header->flatten
+
+=item flatten_without_sort
+
+same as flatten but returns arrayref without sorting.
+
 =back
 
 =head1 @ISA HACK
@@ -668,3 +709,4 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =cut
+
