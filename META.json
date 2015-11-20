@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v2.4.1, CPAN::Meta::Converter version 2.150001",
+   "generated_by" : "Minilla/v2.5.0, CPAN::Meta::Converter version 2.150005",
    "license" : [
       "perl_5"
    ],
@@ -65,7 +65,7 @@
          "web" : "https://github.com/tokuhirom/HTTP-Headers-Fast"
       }
    },
-   "version" : "0.19",
+   "version" : "0.20",
    "x_contributors" : [
       "yappo <yappo@d0d07461-0603-4401-acd4-de1884942a52>",
       "daisuke <daisuke@d0d07461-0603-4401-acd4-de1884942a52>",
@@ -74,6 +74,9 @@
       "Mark Stosberg <mark@stosberg.com>",
       "Neil Bowers <neil@bowers.com>",
       "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
-      "Sawyer X <xsawyerx@cpan.org>"
-   ]
+      "Sawyer X <xsawyerx@cpan.org>",
+      "Masahiro Nagano <kazeburo@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@gmail.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
 }

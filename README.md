@@ -25,6 +25,16 @@ HTTP::Headers is a very good. But I needed a faster implementation, fast  =)
 
     In this method, stringify the instance of HTTP::Headers::Fast without sorting.
 
+- flatten
+
+    returns PSGI compatible arrayref of header.
+
+        my $headers:ArrayRef = $header->flatten
+
+- flatten\_without\_sort
+
+    same as flatten but returns arrayref without sorting.
+
 # @ISA HACK
 
 If you want HTTP::Headers::Fast to pretend like it's really HTTP::Headers, you can try the following hack:
