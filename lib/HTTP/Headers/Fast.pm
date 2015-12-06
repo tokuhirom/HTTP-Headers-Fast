@@ -350,7 +350,8 @@ sub as_string_without_sort {
     $self->_as_string($endl, [keys(%$self)]);
 }
 
-sub _flatten {
+
+sub _psgi_flatten {
     my ($self, $keys) = @_;
     my @headers;
     for my $key ( @{$keys} ) {
@@ -372,13 +373,13 @@ sub _flatten {
     return \@headers;
 }
 
-sub flatten {
-    $_[0]->_flatten($_[0]->_sorted_field_names);
+sub psgi_flatten {
+    $_[0]->_psgi_flatten($_[0]->_sorted_field_names);
 }
 
 
-sub flatten_without_sort {
-    $_[0]->_flatten([keys %{$_[0]}]);
+sub psgi_flatten_without_sort {
+    $_[0]->_psgi_flatten([keys %{$_[0]}]);
 }
 
 {
@@ -619,13 +620,13 @@ as_string method sorts the header names.But, sorting is bit slow.
 
 In this method, stringify the instance of HTTP::Headers::Fast without sorting.
 
-=item flatten
+=item psgi_flatten
 
 returns PSGI compatible arrayref of header.
 
     my $headers:ArrayRef = $header->flatten
 
-=item flatten_without_sort
+=item psgi_flatten_without_sort
 
 same as flatten but returns arrayref without sorting.
 
