@@ -205,6 +205,9 @@ sub _header_get {
 sub _header_set {
     my ($self, $field, $val) = @_;
 
+    Carp::croak("Illegal field name '$field'")
+      if rindex($field, ':') > 1 || !length($field);
+
     $field = _standardize_field_name($field) unless $field =~ /^:/;
 
     my $h = $self->{$field};
@@ -584,6 +587,19 @@ sub _basic_auth {
         return split( /:/, $val, 2 );
     }
     return;
+}
+
+sub flatten {
+    my ( $self ) = @_;
+
+    (
+        map {
+            my $k = $_;
+            map {
+                ( $k => $_ )
+            } $self->header($_);
+        } $self->header_field_names
+    );
 }
 
 1;
