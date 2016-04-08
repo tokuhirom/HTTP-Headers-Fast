@@ -4,7 +4,7 @@ use strict;
 use Test qw(plan ok);
 use Test::Requires 'URI';
 
-plan tests => 164;
+plan tests => 171;
 
 my($h, $h2);
 sub j { join("|", @_) }
@@ -202,11 +202,18 @@ ok($h->header("content_type"), "text/html;\n charSet = \"ISO-8859-1\"; Foo=1 ");
 ok($h->content_is_html);
 ok(!$h->content_is_xhtml);
 ok(!$h->content_is_xml);
+ok($h->content_is_text);
 $h->content_type("application/xhtml+xml");
 ok($h->content_is_html);
 ok($h->content_is_xhtml);
 ok($h->content_is_xml);
-ok($h->content_type("text/html;\n charSet = \"ISO-8859-1\"; Foo=1 "), "application/xhtml+xml");
+ok(!$h->content_is_text);
+ok($h->content_type("text/plain"), "application/xhtml+xml");
+ok(!$h->content_is_html);
+ok(!$h->content_is_xhtml);
+ok(!$h->content_is_xml);
+ok($h->content_is_text);
+ok($h->content_type("text/html;\n charSet = \"ISO-8859-1\"; Foo=1 "), "text/plain");
 
 ok($h->content_encoding, undef);
 ok($h->content_encoding("gzip"), undef);
