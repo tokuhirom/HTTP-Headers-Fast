@@ -510,6 +510,11 @@ sub _split_header_words
     return @res;
 }
 
+sub content_is_text {
+    my $self = shift;
+    return $self->content_type =~ m,^text/,;
+}
+
 sub content_is_html {
     my $self = shift;
     return $self->content_type eq 'text/html' || $self->content_is_xhtml;
