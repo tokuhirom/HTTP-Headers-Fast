@@ -25,13 +25,13 @@ HTTP::Headers is a very good. But I needed a faster implementation, fast  =)
 
     In this method, stringify the instance of HTTP::Headers::Fast without sorting.
 
-- flatten
+- psgi\_flatten
 
     returns PSGI compatible arrayref of header.
 
         my $headers:ArrayRef = $header->flatten
 
-- flatten\_without\_sort
+- psgi\_flatten\_without\_sort
 
     same as flatten but returns arrayref without sorting.
 

@@ -2,6 +2,13 @@ Revision history for Perl extension HTTP::Headers::Fast
 
 {{$NEXT}}
 
+0.21 2017-02-10T03:10:11Z
+
+    - rename flatten to psgi_flatten for fixing compatibility issue plack/plack#541
+      (kazeburo)
+    - Copy "content_is_text" method from HTTP::Headers
+      (nfg)
+
 0.20 2015-11-20T04:44:09Z
 
     - add flatten and flatten_without_sort
